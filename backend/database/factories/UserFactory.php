@@ -26,11 +26,41 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'password' => Hash::make('password123'),  // Everyone gets same password for testing
+            'role' => fake()->randomElement(['admin', 'cashier']), // Random role
+            'is_active' => true,
         ];
     }
+
+
+    //fn: is like a shorter way to say function
+    //state: elle prend la valeur par defaut and change it to admin or cashier
+    public function admin(){
+        return $this ->state(fn(array $atttributes) =>[
+            'role' => 'admin',
+        ]);
+    }
+
+    public function cashier(){
+        return $this ->state(fn(array $atttributes) =>[
+            'role' => 'cashier',
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Indicate that the model's email address should be unverified.

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - POS System</title>
+</head>
+<body>
+    <h1>Register</h1>
+    
+    <form id="registerForm">
+        <div>
+            <label>Name:</label><br>
+            <input type="text" id="name" required>
+        </div>
+        <br>
+        
+        <div>
+            <label>Email:</label><br>
+            <input type="email" id="email" required>
+        </div>
+        <br>
+        
+        <div>
+            <label>Password:</label><br>
+            <input type="password" id="password" required>
+        </div>
+        <br>
+        
+        <button type="submit">Register</button>
+    </form>
+    
+    <br>
+    <div id="result"></div>
+    
+    <br>
+    <a href="login.html">Already have account? Login</a>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('result').innerHTML = 
+                        '<p style="color: green;"> Registration successful!</p>' +
+                        '<p>Token: ' + data.token + '</p>' +
+                        '<p><a href="login.html">Go to Login</a></p>';
+                    
+                    // Sauvegarder le token
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                } else {
+                    document.getElementById('result').innerHTML = 
+                        '<p style="color: red;">'' Error: ' + JSON.stringify(data) + '</p>';
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML = 
+                    '<p style="color: red;"> Error: ' + error.message + '</p>';
+            }
+        });
+    </script>
+</body>
+</html>
