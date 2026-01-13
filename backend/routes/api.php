@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
@@ -31,6 +32,15 @@ Route ::middleware('auth:sanctum')->group(function(){
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{id}', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+
+    //Sales CRUD
+    Route::get('/sales', [SaleController::class, 'index']);
+    Route::get('/sales/{id}', [SaleController::class, 'show']);
+    Route::post('/sales', [SaleController::class, 'store']);
+
+    // Dashboard Stats
+    Route::get('/stats', [SaleController::class, 'stats']);
 
     
 

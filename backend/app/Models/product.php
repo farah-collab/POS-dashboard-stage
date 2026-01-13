@@ -22,4 +22,9 @@ class product extends Model
     public function category(){
         return $this->belongsTo(Category::class);
     }//un produit appartient a une categories we hetha bel category_id fel table product
+
+    public function saleItems()
+    {
+        return $this->hasMany(SaleItem::class);
+    }
 }
